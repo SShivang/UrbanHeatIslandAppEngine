@@ -33,14 +33,16 @@ class MainPage(MyHandler):
     def get(self):
 		self.response.headers['Content-Type'] = 'text/html'
 		logging.info("********** MainPage GET **********")
-		python_dictionary = {}   # creating a new dictionary
-		self.render("uhiportal.html", **python_dictionary)
+		self.render("uhiportal.html")
 		
-class TestHandler(MyHandler):
+class Map(MyHandler):
 	def post(self):
+		src = "http://maps.googleapis.com/maps/api/staticmap?size=800x600&sensor=false"
+		self.render("map.html", src=src)
 
 
 application = webapp2.WSGIApplication([
     ('/', MainPage),
-	('/test', TestHandler)
+	('/map', Map),
+	('/data', Data)
 ], debug=True)
