@@ -4,7 +4,9 @@ import re
 import jinja2
 import os
 import time
+import json
 
+import firebase
 from google.appengine.ext import db
 
 ## see http://jinja.pocoo.org/docs/api/#autoescaping
@@ -40,7 +42,14 @@ class Map(MyHandler):
 		src = "http://maps.googleapis.com/maps/api/staticmap?size=800x600&sensor=false"
 		self.render("map.html", src=src)
 
-
+class Data(MyHandler):
+	def get(self):
+		firebas = firebase.FirebaseApplication('https://Urban-HeatIsland-Project.firebaseio.com/urban-heatisland-project.json', None)
+		id = firebas.get('/id', None)
+		for i in id:
+			logging.info("ID"+ i)
+		self.render("map.html")
+		
 application = webapp2.WSGIApplication([
     ('/', MainPage),
 	('/map', Map),
